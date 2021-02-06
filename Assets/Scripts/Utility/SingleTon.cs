@@ -10,7 +10,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 /// <summary>
-/// 单例基类
+/// 单例基类，继承此类后私有无参构造即可
 /// </summary>
 public class SingleTon<T> where T : class
 {

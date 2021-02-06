@@ -14,10 +14,12 @@ public class TestPool : MonoBehaviour
 {
     void Start()
     {
-        EventsCenter.Instance.AddListener("CreateCube", CreatCube);
+        EventsCenter.Instance.AddListener(GameConst.ON_LOAD_SCENE, Print);
+        SceneMgr.Instance.LoadSceneAsyn("Test", Print1);
 //        MonoManager.Instance.AddUpdateEvent(Print);
+//        MonoManager.Instance.AddUpdateEvent(Print1);
 //        StartCoroutine("Test01");
-        StartCoroutine(Test03("1","2"));
+//        StartCoroutine(Test03("1","2"));
     }
 
     //    void Update()
@@ -30,12 +32,16 @@ public class TestPool : MonoBehaviour
 
     void CreatCube(object obj)
     {
-        PoolManager.Instance.GetObj("Cube", transform);
+        Debug.Log("加载进度: " + obj.ToString());
     }
 
-    void Print()
+    void Print(object obj)
     {
-        Debug.Log(1);
+        Debug.Log("加载进度: " + obj.ToString());
+    }
+    void Print1()
+    {
+        Debug.Log(2);
     }
 
     IEnumerator Test01()

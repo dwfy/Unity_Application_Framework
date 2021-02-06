@@ -46,7 +46,7 @@ public class MonoManager : SingleTon<MonoManager>
     /// <returns></returns>
     public Coroutine StartCoroutine(IEnumerator method)
     {
-        return StartCoroutine(method);
+        return mono.StartCoroutine(method);
     }
 
     public Coroutine StartCoroutine(string methodName)
