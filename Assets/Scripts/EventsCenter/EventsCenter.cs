@@ -17,25 +17,37 @@ public class EventsCenter : SingleTon<EventsCenter>
 {
     private EventsCenter()
     {
-        eventsDic = new Dictionary<string, UnityAction<object>>();
+        eventsDic = new Dictionary<string, IEventInfo>();
     }
 
-    private Dictionary<string, UnityAction<object>> eventsDic;
+    private Dictionary<string, IEventInfo> eventsDic;
 
     /// <summary>
     /// 添加监听
     /// </summary>
     /// <param name="eventname"></param>
     /// <param name="action"></param>
-    public void AddListener(string eventname, UnityAction<object> action)
+    public void AddListener<T>(string eventname, UnityAction<T> action)
     {
         if (eventsDic.ContainsKey(eventname))
         {
-            eventsDic[eventname] += action;
+            (eventsDic[eventname] as EventInfo<T>).actions += action;
         }
         else
         {
-            eventsDic.Add(eventname, action);
+            eventsDic.Add(eventname, new EventInfo<T>(action));
+        }
+    }
+
+    public void AddListener(string name, UnityAction action)
+    {
+        if (eventsDic.ContainsKey(name))
+        {
+            (eventsDic[name] as EventInfo).actions += action;
+        }
+        else
+        {
+            eventsDic.Add(name, new EventInfo(action));
         }
     }
 
@@ -44,11 +56,19 @@ public class EventsCenter : SingleTon<EventsCenter>
     /// </summary>
     /// <param name="eventname"></param>
     /// <param name="action"></param>
-    public void RemoveListener(string eventname, UnityAction<object> action)
+    public void RemoveListener<T>(string eventname, UnityAction<T> action)
     {
         if (eventsDic.ContainsKey(eventname))
         {
-            eventsDic[eventname] -= action;
+            (eventsDic[eventname] as EventInfo<T>).actions -= action;
+        }
+    }
+
+    public void RemoveListener(string name, UnityAction action)
+    {
+        if (eventsDic.ContainsKey(name))
+        {
+            (eventsDic[name] as EventInfo).actions -= action;
         }
     }
 
@@ -57,9 +77,20 @@ public class EventsCenter : SingleTon<EventsCenter>
     /// </summary>
     /// <param name="name"></param>
     /// <param name="obj"></param>
-    public void EventTrigger(string name, object obj)
+    public void EventTrigger<T>(string name, T obj)
     {
-        eventsDic[name]?.Invoke(obj);
+        if (eventsDic.ContainsKey(name))
+        {
+            (eventsDic[name] as EventInfo<T>).actions?.Invoke(obj);
+        }
+    }
+
+    public void EventTrigger(string name)
+    {
+        if (eventsDic.ContainsKey(name))
+        {
+            (eventsDic[name] as EventInfo).actions?.Invoke();
+        }
     }
 
     /// <summary>
