@@ -14,25 +14,28 @@ public class TestPool : MonoBehaviour
 {
     void Start()
     {
-        EventsCenter.Instance.AddListener(GameConst.ON_LOAD_SCENE, Print);
-        SceneMgr.Instance.LoadSceneAsyn("Test", Print1);
+        //EventsCenter.Instance.AddListener(GameConst.ON_LOAD_SCENE, Print);
+        //SceneMgr.Instance.LoadSceneAsyn("Test", Print1);
 //        MonoManager.Instance.AddUpdateEvent(Print);
 //        MonoManager.Instance.AddUpdateEvent(Print1);
 //        StartCoroutine("Test01");
 //        StartCoroutine(Test03("1","2"));
+//        ResLoadMgr.Instance.LoadRes<GameObject>("Sphere");
+//        ResLoadMgr.Instance.LoadResAsyn<GameObject>("Cube", (obj) => { Debug.Log(obj.name); });
+        EventsCenter.Instance.AddListener("CreateCube", CreatCube);
     }
 
-    //    void Update()
-    //    {
-    //        if (Input.GetMouseButtonDown(0))
-    //        {
-    //            EventsCenter.Instance.EventTrigger("CreateCube", "创建了一个Cube");
-    //        }
-    //    }
+    void Update()
+    {
+        if (Input.GetMouseButtonDown(0))
+        {
+            EventsCenter.Instance.EventTrigger("CreateCube", "创建了一个Cube");
+        }
+    }
 
     void CreatCube(object obj)
     {
-        Debug.Log("加载进度: " + obj.ToString());
+        PoolManager.Instance.GetObj("Cube", (go) => { Debug.Log(go.name); });
     }
 
     void Print(object obj)

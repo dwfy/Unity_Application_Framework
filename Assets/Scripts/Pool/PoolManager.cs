@@ -7,6 +7,8 @@ CreateTime:          2021/1/30
 */
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+
 /// <summary>
 /// 对象池管理器
 /// </summary>
@@ -31,23 +33,24 @@ public class PoolManager : SingleTon<PoolManager>
     /// </summary>
     /// <param name="name">对象名称</param>
     /// <returns></returns>
-    public GameObject GetObj(string name)
+    public void GetObj(string name, UnityAction<GameObject> action)
     {
-        GameObject obj = null;
-
         //判断池中是否有此对象
         if (objectPool.ContainsKey(name) && objectPool[name].Count > 0)
         {
-            obj = objectPool[name][0];
+            objectPool[name][0].SetActive(true);
+            action(objectPool[name][0]);
             objectPool[name].RemoveAt(0);
         }
         else
         {
-            obj = GameObject.Instantiate(Resources.Load<GameObject>(name));
-            obj.name = name;
+            ResLoadMgr.Instance.LoadResAsyn<GameObject>(name, (go) =>
+            {
+                go.name = name;
+                go.SetActive(true);
+                action(go);
+            });
         }
-        obj.SetActive(true);
-        return obj;
     }
 
     /// <summary>
