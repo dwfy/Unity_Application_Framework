@@ -22,18 +22,23 @@ public class TestPool : MonoBehaviour
 //        StartCoroutine(Test03("1","2"));
 //        ResLoadMgr.Instance.LoadRes<GameObject>("Sphere");
 //        ResLoadMgr.Instance.LoadResAsyn<GameObject>("Cube", (obj) => { Debug.Log(obj.name); });
-        EventsCenter.Instance.AddListener("CreateCube", CreatCube);
+//        EventsCenter.Instance.AddListener("CreateCube", CreatCube);
+        AudioMgr.Instance.PlayBGM(GameConst.BGM01);
     }
 
     void Update()
     {
         if (Input.GetMouseButtonDown(0))
         {
-            EventsCenter.Instance.EventTrigger("CreateCube", "创建了一个Cube");
+            //            EventsCenter.Instance.EventTrigger("CreateCube", "创建了一个Cube");
+            AudioMgr.Instance.PlaySound(GameConst.SOUND01, false, (clip) =>
+            {
+                Debug.Log(clip.name);
+            });
         }
     }
 
-    void CreatCube(object obj)
+    void CreatCube()
     {
         PoolManager.Instance.GetObj("Cube", (go) => { Debug.Log(go.name); });
     }

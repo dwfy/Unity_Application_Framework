@@ -15,4 +15,14 @@ public class GameConst
     public const string ON_LOAD_SCENE = "ON_LOAD_SCENE";        //异步加载场景事件
 
     #endregion
+
+    #region 音乐音效
+    //-----------------------音乐----------------------------
+    public const string BGM01 = "Music/BGM/bgm01";
+
+    //-----------------------音效----------------------------
+    public const string SOUND01 = "Music/Sounds/victory";
+
+    #endregion
+
 }
